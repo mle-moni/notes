@@ -23,6 +23,10 @@ export default {
 				rel: 'stylesheet',
 				href: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap',
 			},
+			{
+				rel: 'stylesheet',
+				href: 'http://api.local.fr/css/main.css',
+			},
 		],
 	},
 
@@ -39,8 +43,6 @@ export default {
 	buildModules: [
 		// https://go.nuxtjs.dev/eslint
 		'@nuxtjs/eslint-module',
-		// https://go.nuxtjs.dev/tailwindcss
-		'@nuxtjs/tailwindcss',
 	],
 
 	// Modules: https://go.nuxtjs.dev/config-modules
