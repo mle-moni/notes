@@ -62,9 +62,10 @@ export default {
 		}
 	},
 	async fetch() {
-		this.user = await fetch('http://api.local.fr/connected', {
+		this.user = await fetch('http://api.local.fr/user-info', {
 			credentials: 'include',
 		}).then((res) => res.json())
+		localStorage.setItem('user', JSON.stringify(this.user))
 	},
 	fetchOnServer: false,
 }

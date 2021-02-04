@@ -28,6 +28,12 @@ export default {
 				href: 'http://api.local.fr/css/main.css',
 			},
 		],
+		script: [
+			{
+				src: 'https://kit.fontawesome.com/48680109a0.js',
+				crossorigin: 'anonymous',
+			},
+		],
 	},
 
 	// Global CSS: https://go.nuxtjs.dev/config-css
