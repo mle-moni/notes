@@ -2,6 +2,23 @@
 	<div v-if="$fetchState.pending" class="container m-auto min-h-50vh flex flex-align-center">
 		<Loader />
 	</div>
+	<div v-else-if="$fetchState.error">
+		<h1 class="text-align-center">Veuillez vous connecter</h1>
+		<div class="flex flex-space-around">
+			<a
+				class="u-animation-2 font-s-20"
+				href="http://api.local.fr/login?redir=http://notes.local.fr/shopping"
+			>
+				Se connecter
+			</a>
+			<a
+				class="u-animation-2 font-s-20"
+				href="http://api.local.fr/register?redir=http://notes.local.fr/shopping"
+			>
+				Créer un compte
+			</a>
+		</div>
+	</div>
 	<div v-else class="container m-auto flex flex-column">
 		<h1 class="text-align-center">Mes listes de course</h1>
 		<Modal ref="createListModal">
@@ -52,8 +69,7 @@
 			</template>
 		</Modal>
 		<i
-			id="add-list-iccon"
-			class="fas fa-plus pointer hov-color-accent-1 text-align-center"
+			class="fas fa-plus pointer hov-color-accent-1 text-align-center font-s-30"
 			@click="$refs.createListModal.openModal('Nouvelle liste :')"
 		></i>
 		<div
@@ -71,13 +87,13 @@
 				<span class="grow"></span>
 			</div>
 			<i class="fas fa-edit pointer hov-color-accent-1 m-auto p-10" @click="showEditModal">
-				<span class="none" :data-list="JSON.stringify(list)"></span>
+				<span class="data" :data-list="JSON.stringify(list)"></span>
 			</i>
 			<i
 				class="fas fa-trash-alt pointer hov-color-accent-1 m-auto p-10"
 				@click="showDeleteModal"
 			>
-				<span class="none" :data-list="JSON.stringify(list)"></span>
+				<span class="data" :data-list="JSON.stringify(list)"></span>
 			</i>
 		</div>
 	</div>
@@ -90,21 +106,19 @@ export default {
 		}
 	},
 	async fetch() {
-		this.lists = await fetch('http://api.local.fr/shopping', {
+		const req = await fetch('http://api.local.fr/shopping-lists', {
 			credentials: 'include',
-		}).then((res) => res.json())
+		})
+		if (!req.ok) {
+			throw new Error('Erreur lors du fetch')
+		}
+		this.lists = await req.json()
 	},
 	methods: {
 		async createList() {
 			const form = document.getElementById('new-list-form')
 			const error = form.getElementsByClassName('color-error')[0]
-			error.textContent = ''
-			if (form.getElementsByClassName('new-list-name')[0].value === '') {
-				error.classList.remove('none')
-				error.textContent = 'Le nom ne peut pas être vide'
-				return
-			}
-			const req = await fetch('http://api.local.fr/shopping', {
+			const req = await fetch('http://api.local.fr/shopping-lists', {
 				credentials: 'include',
 				method: 'POST',
 				body: new FormData(form),
@@ -123,14 +137,14 @@ export default {
 		},
 		showDeleteModal(e) {
 			const list = JSON.parse(
-				e.target.getElementsByClassName('none')[0].getAttribute('data-list')
+				e.target.getElementsByClassName('data')[0].getAttribute('data-list')
 			)
 			this.$refs.deleteListModal.openModal(list.name)
 			this.$refs.deleteListModal.setItem('id', list.id)
 		},
 		async deleteList(e) {
 			const id = this.$refs.deleteListModal.getItem('id')
-			const req = await fetch(`http://api.local.fr/shopping/${id}?_method=DELETE`, {
+			const req = await fetch(`http://api.local.fr/shopping-lists/${id}?_method=DELETE`, {
 				credentials: 'include',
 				method: 'POST',
 			})
@@ -147,7 +161,7 @@ export default {
 		},
 		showEditModal(e) {
 			const list = JSON.parse(
-				e.target.getElementsByClassName('none')[0].getAttribute('data-list')
+				e.target.getElementsByClassName('data')[0].getAttribute('data-list')
 			)
 			this.$refs.editListModal.openModal(list.name)
 			this.$refs.editListModal.setItem('id', list.id)
@@ -156,13 +170,7 @@ export default {
 			const id = this.$refs.editListModal.getItem('id')
 			const form = document.getElementById('edit-list-form')
 			const error = form.getElementsByClassName('color-error')[0]
-			error.textContent = ''
-			if (form.getElementsByClassName('new-list-name')[0].value === '') {
-				error.classList.remove('none')
-				error.textContent = 'Le nom ne peut pas être vide'
-				return
-			}
-			const req = await fetch(`http://api.local.fr/shopping/${id}?_method=PATCH`, {
+			const req = await fetch(`http://api.local.fr/shopping-lists/${id}?_method=PATCH`, {
 				credentials: 'include',
 				method: 'POST',
 				body: new FormData(form),
@@ -189,8 +197,3 @@ export default {
 	fetchOnServer: false,
 }
 </script>
-<style scoped>
-#add-list-iccon {
-	font-size: 30px;
-}
-</style>
