@@ -1,6 +1,6 @@
 <template>
 	<div v-if="$fetchState.pending" class="container m-auto min-h-50vh flex flex-align-center">
-		<Loader />
+		<SharedLoader />
 	</div>
 	<div v-else-if="$fetchState.error">
 		<h1 class="text-align-center">Veuillez vous connecter</h1>
@@ -21,7 +21,7 @@
 	</div>
 	<div v-else class="container m-auto flex flex-column">
 		<h1 class="text-align-center">Mes listes de course</h1>
-		<Modal ref="createListModal">
+		<SharedModal ref="createListModal">
 			<template #body>
 				<form
 					id="new-list-form"
@@ -40,15 +40,15 @@
 					</div>
 				</form>
 			</template>
-		</Modal>
-		<Modal ref="deleteListModal">
+		</SharedModal>
+		<SharedModal ref="deleteListModal">
 			<template #body>
 				<div class="flex flex-space-around">
 					<button @click="deleteList">Supprimer ?</button>
 				</div>
 			</template>
-		</Modal>
-		<Modal ref="editListModal">
+		</SharedModal>
+		<SharedModal ref="editListModal">
 			<template #body>
 				<form
 					id="edit-list-form"
@@ -67,10 +67,10 @@
 					</div>
 				</form>
 			</template>
-		</Modal>
+		</SharedModal>
 		<i
 			class="fas fa-plus pointer hov-color-accent-1 text-align-center font-s-30"
-			@click="$ref.createListModal.openModal('Nouvelle liste :')"
+			@click="$refs.createListModal.openModal('Nouvelle liste :')"
 		></i>
 		<div
 			v-for="list in lists"
@@ -133,17 +133,17 @@ export default {
 				return
 			}
 			this.lists.push(await req.json())
-			this.$ref.createListModal.closeModal()
+			this.$refs.createListModal.closeModal()
 		},
 		showDeleteModal(e) {
 			const list = JSON.parse(
 				e.target.getElementsByClassName('data')[0].getAttribute('data-list')
 			)
-			this.$ref.deleteListModal.openModal(list.name)
-			this.$ref.deleteListModal.setItem('id', list.id)
+			this.$refs.deleteListModal.openModal(list.name)
+			this.$refs.deleteListModal.setItem('id', list.id)
 		},
 		async deleteList(e) {
-			const id = this.$ref.deleteListModal.getItem('id')
+			const id = this.$refs.deleteListModal.getItem('id')
 			const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${id}?_method=DELETE`, {
 				credentials: 'include',
 				method: 'POST',
@@ -157,17 +157,17 @@ export default {
 					break
 				}
 			}
-			this.$ref.deleteListModal.closeModal()
+			this.$refs.deleteListModal.closeModal()
 		},
 		showEditModal(e) {
 			const list = JSON.parse(
 				e.target.getElementsByClassName('data')[0].getAttribute('data-list')
 			)
-			this.$ref.editListModal.openModal(list.name)
-			this.$ref.editListModal.setItem('id', list.id)
+			this.$refs.editListModal.openModal(list.name)
+			this.$refs.editListModal.setItem('id', list.id)
 		},
 		async editList() {
-			const id = this.$ref.editListModal.getItem('id')
+			const id = this.$refs.editListModal.getItem('id')
 			const form = document.getElementById('edit-list-form')
 			const error = form.getElementsByClassName('color-error')[0]
 			const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${id}?_method=PATCH`, {
@@ -191,7 +191,7 @@ export default {
 					break
 				}
 			}
-			this.$ref.editListModal.closeModal()
+			this.$refs.editListModal.closeModal()
 		},
 	},
 	fetchOnServer: false,

@@ -1,10 +1,10 @@
 <template>
 	<div v-if="$fetchState.pending" class="container m-auto min-h-50vh flex flex-align-center">
-		<Loader />
+		<SharedLoader />
 	</div>
 	<div v-else class="container m-auto">
 		<h1 class="text-align-center">{{ list.name }}</h1>
-		<Modal ref="createItemModal">
+		<SharedModal ref="createItemModal">
 			<template #body>
 				<form
 					id="new-item-form"
@@ -32,11 +32,11 @@
 					</div>
 				</form>
 			</template>
-		</Modal>
+		</SharedModal>
 		<div class="flex flex-column">
 			<i
 				class="fas fa-plus pointer hov-color-accent-1 text-align-center font-s-30 p-auto"
-				@click="$ref.createItemModal.openModal('Ajouter un objet :')"
+				@click="$refs.createItemModal.openModal('Ajouter un objet :')"
 			></i>
 			<li
 				v-for="item in sortedItems"
@@ -159,7 +159,7 @@ export default {
 				return
 			}
 			this.items.push(await req.json())
-			this.$ref.createItemModal.closeModal()
+			this.$refs.createItemModal.closeModal()
 		},
 	},
 	fetchOnServer: false,
