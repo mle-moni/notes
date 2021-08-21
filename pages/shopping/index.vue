@@ -70,7 +70,7 @@
 		</Modal>
 		<i
 			class="fas fa-plus pointer hov-color-accent-1 text-align-center font-s-30"
-			@click="$refs.createListModal.openModal('Nouvelle liste :')"
+			@click="$ref.createListModal.openModal('Nouvelle liste :')"
 		></i>
 		<div
 			v-for="list in lists"
@@ -133,17 +133,17 @@ export default {
 				return
 			}
 			this.lists.push(await req.json())
-			this.$refs.createListModal.closeModal()
+			this.$ref.createListModal.closeModal()
 		},
 		showDeleteModal(e) {
 			const list = JSON.parse(
 				e.target.getElementsByClassName('data')[0].getAttribute('data-list')
 			)
-			this.$refs.deleteListModal.openModal(list.name)
-			this.$refs.deleteListModal.setItem('id', list.id)
+			this.$ref.deleteListModal.openModal(list.name)
+			this.$ref.deleteListModal.setItem('id', list.id)
 		},
 		async deleteList(e) {
-			const id = this.$refs.deleteListModal.getItem('id')
+			const id = this.$ref.deleteListModal.getItem('id')
 			const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${id}?_method=DELETE`, {
 				credentials: 'include',
 				method: 'POST',
@@ -157,17 +157,17 @@ export default {
 					break
 				}
 			}
-			this.$refs.deleteListModal.closeModal()
+			this.$ref.deleteListModal.closeModal()
 		},
 		showEditModal(e) {
 			const list = JSON.parse(
 				e.target.getElementsByClassName('data')[0].getAttribute('data-list')
 			)
-			this.$refs.editListModal.openModal(list.name)
-			this.$refs.editListModal.setItem('id', list.id)
+			this.$ref.editListModal.openModal(list.name)
+			this.$ref.editListModal.setItem('id', list.id)
 		},
 		async editList() {
-			const id = this.$refs.editListModal.getItem('id')
+			const id = this.$ref.editListModal.getItem('id')
 			const form = document.getElementById('edit-list-form')
 			const error = form.getElementsByClassName('color-error')[0]
 			const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${id}?_method=PATCH`, {
@@ -191,7 +191,7 @@ export default {
 					break
 				}
 			}
-			this.$refs.editListModal.closeModal()
+			this.$ref.editListModal.closeModal()
 		},
 	},
 	fetchOnServer: false,

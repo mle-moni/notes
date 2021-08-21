@@ -36,7 +36,7 @@
 		<div class="flex flex-column">
 			<i
 				class="fas fa-plus pointer hov-color-accent-1 text-align-center font-s-30 p-auto"
-				@click="$refs.createItemModal.openModal('Ajouter un objet :')"
+				@click="$ref.createItemModal.openModal('Ajouter un objet :')"
 			></i>
 			<li
 				v-for="item in sortedItems"
@@ -159,7 +159,7 @@ export default {
 				return
 			}
 			this.items.push(await req.json())
-			this.$refs.createItemModal.closeModal()
+			this.$ref.createItemModal.closeModal()
 		},
 	},
 	fetchOnServer: false,
