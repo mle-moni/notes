@@ -39,7 +39,7 @@
 				@click="$refs.createItemModal.openModal('Ajouter un objet :')"
 			></i>
 			<li
-				v-for="item in items"
+				v-for="item in sortedItems"
 				:key="item.id"
 				class="font-s-20 no-dash flex flex-space-between"
 			>
@@ -59,6 +59,14 @@
 					/>
 					<span></span>
 					<span
+						v-if="item.amount === 1"
+						:id="`item-${list.id}-${item.id}`"
+						:class="{ 'line-through': item.checked }"
+					>
+						{{ item.name }}
+					</span>
+					<span
+						v-else
 						:id="`item-${list.id}-${item.id}`"
 						:class="{ 'line-through': item.checked }"
 					>
@@ -81,8 +89,13 @@ export default {
 			items: [],
 		}
 	},
+	computed: {
+		sortedItems: function () {
+			return this.items.sort((a, b) => +a.checked - +b.checked)
+		},
+	},
 	async fetch() {
-		const req = await fetch(`http://api.local.fr/shopping-lists/${this.$route.params.id}`, {
+		const req = await fetch(`http://api.mle-moni.fr/shopping-lists/${this.$route.params.id}`, {
 			credentials: 'include',
 		})
 		if (!req.ok) {
@@ -97,7 +110,7 @@ export default {
 			const item = JSON.parse(
 				e.target.getElementsByClassName('data')[0].getAttribute('data-item')
 			)
-			const req = await fetch(`http://api.local.fr/cart-items/${item.id}?_method=DELETE`, {
+			const req = await fetch(`http://api.mle-moni.fr/cart-items/${item.id}?_method=DELETE`, {
 				credentials: 'include',
 				method: 'POST',
 			})
@@ -113,7 +126,7 @@ export default {
 		},
 		async toggleItem(e) {
 			const item = JSON.parse(e.target.getAttribute('data-item'))
-			const req = await fetch(`http://api.local.fr/cart-items/${item.id}?_method=PATCH`, {
+			const req = await fetch(`http://api.mle-moni.fr/cart-items/${item.id}?_method=PATCH`, {
 				credentials: 'include',
 				method: 'POST',
 			})
@@ -128,7 +141,7 @@ export default {
 			const form = document.getElementById('new-item-form')
 			form.getElementsByClassName('new-item-list-id')[0].value = `${this.$route.params.id}`
 			const error = form.getElementsByClassName('color-error')[0]
-			const req = await fetch(`http://api.local.fr/cart-items`, {
+			const req = await fetch(`http://api.mle-moni.fr/cart-items`, {
 				credentials: 'include',
 				method: 'POST',
 				body: new FormData(form),

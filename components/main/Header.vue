@@ -13,7 +13,7 @@
 						<a class="u-animation-2" href="#"> Votre compte </a>
 						<a
 							class="u-animation-2"
-							href="http://api.local.fr/logout?redir=http://notes.local.fr/"
+							href="http://api.mle-moni.fr/logout?redir=http://notes.local.fr/"
 						>
 							Se déconnecter
 						</a>
@@ -21,13 +21,13 @@
 					<div v-else class="link-container">
 						<a
 							class="u-animation-2"
-							href="http://api.local.fr/login?redir=http://notes.local.fr/"
+							href="http://api.mle-moni.fr/login?redir=http://notes.local.fr/"
 						>
 							Se connecter
 						</a>
 						<a
 							class="u-animation-2"
-							href="http://api.local.fr/register?redir=http://notes.local.fr/"
+							href="http://api.mle-moni.fr/register?redir=http://notes.local.fr/"
 						>
 							Créer un compte
 						</a>
@@ -62,7 +62,7 @@ export default {
 		}
 	},
 	async fetch() {
-		this.user = await fetch('http://api.local.fr/user-info', {
+		this.user = await fetch('http://api.mle-moni.fr/user-info', {
 			credentials: 'include',
 		}).then((res) => res.json())
 		localStorage.setItem('user', JSON.stringify(this.user))

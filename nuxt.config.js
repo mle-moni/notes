@@ -25,7 +25,7 @@ export default {
 			},
 			{
 				rel: 'stylesheet',
-				href: 'http://api.local.fr/css/main.css',
+				href: 'http://api.mle-moni.fr/css/main.css',
 			},
 		],
 		script: [
@@ -66,4 +66,8 @@ export default {
 
 	// Build Configuration: https://go.nuxtjs.dev/config-build
 	build: {},
+
+	server: {
+		port: 6767
+	},
 }
