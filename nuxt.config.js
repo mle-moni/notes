@@ -25,7 +25,7 @@ export default {
 			},
 			{
 				rel: 'stylesheet',
-				href: 'http://api.mle-moni.fr/css/main.css',
+				href: 'https://api.mle-moni.fr/css/main.css',
 			},
 		],
 		script: [

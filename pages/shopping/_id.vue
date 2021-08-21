@@ -95,7 +95,7 @@ export default {
 		},
 	},
 	async fetch() {
-		const req = await fetch(`http://api.mle-moni.fr/shopping-lists/${this.$route.params.id}`, {
+		const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${this.$route.params.id}`, {
 			credentials: 'include',
 		})
 		if (!req.ok) {
@@ -110,10 +110,13 @@ export default {
 			const item = JSON.parse(
 				e.target.getElementsByClassName('data')[0].getAttribute('data-item')
 			)
-			const req = await fetch(`http://api.mle-moni.fr/cart-items/${item.id}?_method=DELETE`, {
-				credentials: 'include',
-				method: 'POST',
-			})
+			const req = await fetch(
+				`https://api.mle-moni.fr/cart-items/${item.id}?_method=DELETE`,
+				{
+					credentials: 'include',
+					method: 'POST',
+				}
+			)
 			if (!req.ok) {
 				return
 			}
@@ -126,7 +129,7 @@ export default {
 		},
 		async toggleItem(e) {
 			const item = JSON.parse(e.target.getAttribute('data-item'))
-			const req = await fetch(`http://api.mle-moni.fr/cart-items/${item.id}?_method=PATCH`, {
+			const req = await fetch(`https://api.mle-moni.fr/cart-items/${item.id}?_method=PATCH`, {
 				credentials: 'include',
 				method: 'POST',
 			})
@@ -141,7 +144,7 @@ export default {
 			const form = document.getElementById('new-item-form')
 			form.getElementsByClassName('new-item-list-id')[0].value = `${this.$route.params.id}`
 			const error = form.getElementsByClassName('color-error')[0]
-			const req = await fetch(`http://api.mle-moni.fr/cart-items`, {
+			const req = await fetch(`https://api.mle-moni.fr/cart-items`, {
 				credentials: 'include',
 				method: 'POST',
 				body: new FormData(form),

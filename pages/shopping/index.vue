@@ -7,13 +7,13 @@
 		<div class="flex flex-space-around">
 			<a
 				class="u-animation-2 font-s-20"
-				href="http://api.mle-moni.fr/login?redir=http://notes.local.fr/shopping"
+				href="https://api.mle-moni.fr/login?redir=http://notes.local.fr/shopping"
 			>
 				Se connecter
 			</a>
 			<a
 				class="u-animation-2 font-s-20"
-				href="http://api.mle-moni.fr/register?redir=http://notes.local.fr/shopping"
+				href="https://api.mle-moni.fr/register?redir=http://notes.local.fr/shopping"
 			>
 				Créer un compte
 			</a>
@@ -106,7 +106,7 @@ export default {
 		}
 	},
 	async fetch() {
-		const req = await fetch('http://api.mle-moni.fr/shopping-lists', {
+		const req = await fetch('https://api.mle-moni.fr/shopping-lists', {
 			credentials: 'include',
 		})
 		if (!req.ok) {
@@ -118,7 +118,7 @@ export default {
 		async createList() {
 			const form = document.getElementById('new-list-form')
 			const error = form.getElementsByClassName('color-error')[0]
-			const req = await fetch('http://api.mle-moni.fr/shopping-lists', {
+			const req = await fetch('https://api.mle-moni.fr/shopping-lists', {
 				credentials: 'include',
 				method: 'POST',
 				body: new FormData(form),
@@ -144,7 +144,7 @@ export default {
 		},
 		async deleteList(e) {
 			const id = this.$refs.deleteListModal.getItem('id')
-			const req = await fetch(`http://api.mle-moni.fr/shopping-lists/${id}?_method=DELETE`, {
+			const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${id}?_method=DELETE`, {
 				credentials: 'include',
 				method: 'POST',
 			})
@@ -170,7 +170,7 @@ export default {
 			const id = this.$refs.editListModal.getItem('id')
 			const form = document.getElementById('edit-list-form')
 			const error = form.getElementsByClassName('color-error')[0]
-			const req = await fetch(`http://api.mle-moni.fr/shopping-lists/${id}?_method=PATCH`, {
+			const req = await fetch(`https://api.mle-moni.fr/shopping-lists/${id}?_method=PATCH`, {
 				credentials: 'include',
 				method: 'POST',
 				body: new FormData(form),
